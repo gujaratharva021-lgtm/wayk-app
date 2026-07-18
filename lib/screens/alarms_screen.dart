@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
@@ -66,6 +66,20 @@ class _AlarmsScreenState extends State<AlarmsScreen> {
     if (completed) _load();
   }
 
+  Future<void> _deleteAlarm(String alarmId) async {
+    final token = context.read<AuthProvider>().token;
+    if (token == null) return;
+    try {
+      await ApiService.deleteAlarm(token, alarmId);
+      _load();
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not delete alarm')),
+      );
+    }
+  }
+
   Future<void> _snooze(String triggerId) async {
     final token = context.read<AuthProvider>().token;
     if (token == null) return;
@@ -119,7 +133,15 @@ class _AlarmsScreenState extends State<AlarmsScreen> {
                   ),
                 )
               else
-                ..._alarms.map((a) => _AlarmCard(alarm: a)),
+                ..._alarms.map((a) {
+                    final completedToday = _todayTriggers.any((t) =>
+                        t['alarm_id'] == a['id'] && t['status'] == 'completed');
+                    return _AlarmCard(
+                      alarm: a,
+                      completedToday: completedToday,
+                      onDelete: () => _deleteAlarm(a['id']),
+                    );
+                  }),
             ],
           ),
         ),
@@ -176,8 +198,9 @@ class _TodayMissionCard extends StatelessWidget {
 
 class _AlarmCard extends StatelessWidget {
   final dynamic alarm;
-
-  const _AlarmCard({required this.alarm});
+  final bool completedToday;
+  final VoidCallback onDelete;
+  const _AlarmCard({required this.alarm, required this.completedToday, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -185,20 +208,25 @@ class _AlarmCard extends StatelessWidget {
     final repeat = (alarm['repeat'] as String?) ?? 'daily';
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: completedToday ? AppColors.vitality.withValues(alpha: 0.12) : AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: completedToday ? AppColors.vitality.withValues(alpha: 0.4) : AppColors.border),
       ),
       child: Row(
         children: [
+          if (completedToday)
+            const Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Icon(Icons.check_circle_rounded, color: AppColors.vitality, size: 20),
+            ),
           Text(
             alarm['time'] ?? '--:--',
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 18),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +238,7 @@ class _AlarmCard extends StatelessWidget {
                     Icon(mission.icon, size: 14, color: AppColors.textMuted),
                     const SizedBox(width: 4),
                     Text(
-                      '${mission.label} · $repeat',
+                      '${mission.label} � $repeat',
                       style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
                     ),
                   ],
@@ -219,7 +247,16 @@ class _AlarmCard extends StatelessWidget {
             ),
           ),
           if (alarm['snooze_blocked'] == true)
-            const Icon(Icons.block_rounded, color: AppColors.danger, size: 18),
+            const Padding(
+              padding: EdgeInsets.only(right: 8),
+              child: Icon(Icons.block_rounded, color: AppColors.danger, size: 18),
+            ),
+          IconButton(
+            onPressed: onDelete,
+            icon: const Icon(Icons.delete_outline_rounded, color: AppColors.danger, size: 20),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+          ),
         ],
       ),
     );

@@ -1,10 +1,12 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/api_config.dart';
+import '../services/alarm_poller.dart';
+import '../services/notification_service.dart';
 
 /// Holds the logged-in user's JWT token and basic profile info, persisted
 /// to SharedPreferences so the session survives app restarts. Every other
@@ -29,6 +31,7 @@ class AuthProvider extends ChangeNotifier {
     _userName = prefs.getString('user_name');
     _loading = false;
     notifyListeners();
+    if (_token != null) AlarmPoller.start();
   }
 
   /// Returns null on success, or an error message to show the user.
@@ -78,6 +81,8 @@ class AuthProvider extends ChangeNotifier {
     _token = token;
     _userName = name;
     notifyListeners();
+    AlarmPoller.start();
+    NotificationService.show('Welcome', 'Hi $name, glad to see you on WAYK.');
   }
 
   Future<void> logout() async {

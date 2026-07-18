@@ -1,4 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import '../main.dart';
 
 import '../theme/app_theme.dart';
 import 'alarms_screen.dart';
@@ -18,6 +20,24 @@ class HomeShell extends StatefulWidget {
 
 class _HomeShellState extends State<HomeShell> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    if (kIsWeb) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        homeMaxWidth.value = 960;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    if (kIsWeb) {
+      homeMaxWidth.value = 480;
+    }
+    super.dispose();
+  }
 
   final _tabs = const [
     DashboardScreen(),

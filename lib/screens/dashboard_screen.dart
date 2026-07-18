@@ -67,70 +67,143 @@ class _DashboardScreenState extends State<DashboardScreen> {
       onRefresh: _load,
       color: AppColors.sunrise,
       backgroundColor: AppColors.surface,
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 24, 20, 110),
-        children: [
-          const Text('Good to see you,', style: TextStyle(color: AppColors.textMuted, fontSize: 15)),
-          Text(
-            auth.userName ?? 'there',
-            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
-          ),
-          const SizedBox(height: 28),
-          Center(child: StreakRing(streak: _streak)),
-          const SizedBox(height: 10),
-          Center(
-            child: Text(
-              'Longest streak: $_longestStreak days',
-              style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
-            ),
-          ),
-          const SizedBox(height: 28),
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.border),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.water_drop_rounded, color: AppColors.vitality, size: 20),
-                    const SizedBox(width: 8),
-                    const Text('Water intake', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
-                    const Spacer(),
-                    Text(
-                      '${_waterTotal}ml / ${_waterGoal}ml',
-                      style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: LinearProgressIndicator(
-                    value: waterProgress,
-                    minHeight: 10,
-                    backgroundColor: AppColors.surfaceHigh,
-                    valueColor: const AlwaysStoppedAnimation(AppColors.vitality),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth > 700;
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(20, 24, 20, 110),
             children: [
-              Expanded(
-                child: _QuickStat(icon: Icons.alarm_rounded, label: 'Alarms', value: '$_alarmCount'),
+              const Text('Good to see you,', style: TextStyle(color: AppColors.textMuted, fontSize: 15)),
+              Text(
+                auth.userName ?? 'there',
+                style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _QuickStat(icon: Icons.local_fire_department_rounded, label: 'Missions today', value: '$_missionsToday'),
+              const SizedBox(height: 28),
+              isWide ? _buildWideBody(waterProgress) : _buildNarrowBody(waterProgress),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  // ---------- Wide / web layout: streak left, cards grid right ----------
+  Widget _buildWideBody(double waterProgress) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 4,
+          child: Column(
+            children: [
+              Center(child: StreakRing(streak: _streak)),
+              const SizedBox(height: 10),
+              Center(
+                child: Text(
+                  'Longest streak: $_longestStreak days',
+                  style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
+                ),
               ),
             ],
+          ),
+        ),
+        const SizedBox(width: 24),
+        Expanded(
+          flex: 6,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _WaterCard(total: _waterTotal, goal: _waterGoal, progress: waterProgress),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: _QuickStat(icon: Icons.alarm_rounded, label: 'Alarms', value: '$_alarmCount'),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _QuickStat(icon: Icons.local_fire_department_rounded, label: 'Missions today', value: '$_missionsToday'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ---------- Narrow / mobile layout: original stacked design ----------
+  Widget _buildNarrowBody(double waterProgress) {
+    return Column(
+      children: [
+        Center(child: StreakRing(streak: _streak)),
+        const SizedBox(height: 10),
+        Center(
+          child: Text(
+            'Longest streak: $_longestStreak days',
+            style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
+          ),
+        ),
+        const SizedBox(height: 28),
+        _WaterCard(total: _waterTotal, goal: _waterGoal, progress: waterProgress),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _QuickStat(icon: Icons.alarm_rounded, label: 'Alarms', value: '$_alarmCount'),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _QuickStat(icon: Icons.local_fire_department_rounded, label: 'Missions today', value: '$_missionsToday'),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _WaterCard extends StatelessWidget {
+  final int total;
+  final int goal;
+  final double progress;
+
+  const _WaterCard({required this.total, required this.goal, required this.progress});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.water_drop_rounded, color: AppColors.vitality, size: 20),
+              const SizedBox(width: 8),
+              const Text('Water intake', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+              const Spacer(),
+              Text(
+                '${total}ml / ${goal}ml',
+                style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 10,
+              backgroundColor: AppColors.surfaceHigh,
+              valueColor: const AlwaysStoppedAnimation(AppColors.vitality),
+            ),
           ),
         ],
       ),

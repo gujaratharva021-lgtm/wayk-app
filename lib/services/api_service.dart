@@ -1,4 +1,4 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
@@ -237,6 +237,14 @@ class ApiService {
 
   static Future<Map<String, dynamic>> toggleGroceryItem(String token, String itemId) {
     return _authorizedPost('/grocery/$itemId/toggle', token);
+  }
+
+  static Future<void> deleteAlarm(String token, String alarmId) async {
+    final res = await http.delete(
+      Uri.parse('${ApiConfig.baseUrl}/alarm/$alarmId'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+    _decode(res);
   }
 
   static Future<void> deleteGroceryItem(String token, String itemId) async {

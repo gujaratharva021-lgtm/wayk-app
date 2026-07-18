@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "547370214775",
+    "project_id": "wayk-app",
+    "storage_bucket": "wayk-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547370214775:android:053320964a841eb8a36d72",
+        "android_client_info": {
+          "package_name": "com.example.wayk_frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCstemqncfCXyo7co9e-iX94As3w6rvYA8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
