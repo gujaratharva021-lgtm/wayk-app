@@ -82,7 +82,7 @@ class AuthProvider extends ChangeNotifier {
     _userName = name;
     notifyListeners();
     AlarmPoller.start();
-    NotificationService.show('Welcome', 'Hi $name, glad to see you on WAYK.');
+    NotificationService.show('Welcome', 'Hi $name, glad to see you on OneX.');
   }
 
   Future<void> logout() async {

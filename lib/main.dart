@@ -37,9 +37,9 @@ class OneXTaskHandler extends TaskHandler {
 void initForegroundTask() {
   FlutterForegroundTask.init(
     androidNotificationOptions: AndroidNotificationOptions(
-      channelId: 'wayk_foreground',
-      channelName: 'WAYK Background Service',
-      channelDescription: 'Keeps WAYK checking for alarms and reminders in the background.',
+      channelId: 'OneX_foreground',
+      channelName: 'OneX Background Service',
+      channelDescription: 'Keeps OneX checking for alarms and reminders in the background.',
       channelImportance: NotificationChannelImportance.LOW,
       priority: NotificationPriority.LOW,
     ),
@@ -56,7 +56,7 @@ void initForegroundTask() {
 Future<void> startForegroundTask() async {
   if (await FlutterForegroundTask.isRunningService) return;
   await FlutterForegroundTask.startService(
-    notificationTitle: 'WAYK is active',
+    notificationTitle: 'OneX is active',
     notificationText: 'Watching for your alarms and reminders.',
     callback: startCallback,
   );
@@ -100,7 +100,7 @@ class OneXApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => AuthProvider(),
       child: MaterialApp(
-        title: 'WAYK',
+        title: 'OneX',
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.dark,
         darkTheme: AppTheme.dark,

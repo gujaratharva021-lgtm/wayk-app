@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
@@ -22,7 +22,7 @@ class _AIChatScreenState extends State<AIChatScreen> {
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
   final List<_ChatMessage> _messages = [
-    _ChatMessage("Hi! I'm your WAYK health assistant. Ask me anything about your habits, diet, or wellness.", false),
+    _ChatMessage("Hi! I'm your OneX health assistant. Ask me anything about your habits, diet, or wellness.", false),
   ];
   bool _sending = false;
 

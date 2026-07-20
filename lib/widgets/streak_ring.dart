@@ -1,9 +1,9 @@
-﻿import 'dart:math';
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 
-/// WAYK's signature visual: an arc that fills like a sunrise climbing
+/// OneX's signature visual: an arc that fills like a sunrise climbing
 /// over the horizon as the user's streak grows. A 30-day streak caps
 /// the ring (fully "risen").
 class StreakRing extends StatelessWidget {

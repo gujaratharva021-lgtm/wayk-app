@@ -1,7 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// WAYK's visual identity: "sunrise on a health tracker."
+/// OneX's visual identity: "sunrise on a health tracker."
 /// Deep midnight-navy background, a warm sunrise-coral accent for
 /// alarms/energy/streaks, and a mint-teal accent for health/vitality --
 /// tying the palette directly to what this app is about: waking up

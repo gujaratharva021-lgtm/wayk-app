@@ -1,4 +1,4 @@
-﻿import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const _SunriseMark(),
             const SizedBox(height: 20),
             const Text(
-              'WAYK',
+              'OneX',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 34, fontWeight: FontWeight.w800, letterSpacing: 1.5),
             ),
@@ -237,7 +237,7 @@ class _BrandPanel extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           const Text(
-            'WAYK',
+            'OneX',
             style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.w800, letterSpacing: 1.5),
           ),
           const SizedBox(height: 12),

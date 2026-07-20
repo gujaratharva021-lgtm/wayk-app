@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../config/api_config.dart';
 
-/// Thin wrapper around the WAYK backend's REST API. Every method that
+/// Thin wrapper around the OneX backend's REST API. Every method that
 /// needs auth takes the JWT token explicitly (read from AuthProvider by
 /// the calling screen) rather than this service holding its own state.
 class ApiService {

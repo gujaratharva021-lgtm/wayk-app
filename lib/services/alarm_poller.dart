@@ -64,7 +64,7 @@ class AlarmPoller {
         final id = t['id'].toString();
         final alarmId = t['alarm_id']?.toString();
         final alarm = alarms.firstWhere((a) => a['id']?.toString() == alarmId, orElse: () => null);
-        final title = alarm != null ? (alarm['title'] ?? 'WAYK Alarm') : 'WAYK Alarm';
+        final title = alarm != null ? (alarm['title'] ?? 'OneX Alarm') : 'OneX Alarm';
         _notifiedIds.add('alarm:$id');
         await NotificationService.show(title, 'You have a mission to complete!');
         navigatorKey.currentState?.push(MaterialPageRoute(
@@ -121,7 +121,7 @@ class AlarmPoller {
       final hourOk = now.hour >= 7 && now.hour < 22;
       if (dueForReminder && hourOk && totalMl < goalMl) {
         await prefs.setString('last_water_reminder_at', now.toIso8601String());
-        await NotificationService.show('WAYK', 'Time to drink some water!');
+        await NotificationService.show('OneX', 'Time to drink some water!');
       }
     } catch (_) {}
   }
@@ -157,7 +157,7 @@ class AlarmPoller {
 
       if (!loggedBpToday || !loggedSugarToday) {
         await prefs.setBool(todayKey, true);
-        await NotificationService.show('WAYK', "Don't forget to log your health readings today!");
+        await NotificationService.show('OneX', "Don't forget to log your health readings today!");
       }
     } catch (_) {}
   }
@@ -183,7 +183,7 @@ class AlarmPoller {
 
       if (!anyCompletedToday && triggers.isNotEmpty) {
         await prefs.setBool(todayKey, true);
-        await NotificationService.show('WAYK', "Complete a mission before midnight to keep your streak alive!");
+        await NotificationService.show('OneX', "Complete a mission before midnight to keep your streak alive!");
       }
     } catch (_) {}
   }

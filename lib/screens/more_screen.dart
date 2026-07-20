@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
@@ -41,7 +41,7 @@ class MoreScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(auth.userName ?? '', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-                      const Text('WAYK member', style: TextStyle(color: AppColors.textMuted, fontSize: 13)),
+                      const Text('OneX member', style: TextStyle(color: AppColors.textMuted, fontSize: 13)),
                     ],
                   ),
                 ),

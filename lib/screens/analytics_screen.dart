@@ -1,4 +1,4 @@
-﻿import 'dart:io';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -59,10 +59,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     try {
       final csv = await ApiService.exportCSV(token, type, days: _days);
       final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/wayk_${type}_export.csv');
+      final file = File('${dir.path}/OneX_${type}_export.csv');
       await file.writeAsString(csv);
       if (!mounted) return;
-      await Share.shareXFiles([XFile(file.path)], text: 'WAYK $type export');
+      await Share.shareXFiles([XFile(file.path)], text: 'OneX $type export');
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Could not export CSV')));
@@ -78,10 +78,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     try {
       final bytes = await ApiService.exportPDF(token, days: _days);
       final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/wayk_health_report.pdf');
+      final file = File('${dir.path}/OneX_health_report.pdf');
       await file.writeAsBytes(bytes);
       if (!mounted) return;
-      await Share.shareXFiles([XFile(file.path)], text: 'WAYK health report');
+      await Share.shareXFiles([XFile(file.path)], text: 'OneX health report');
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Could not export PDF')));

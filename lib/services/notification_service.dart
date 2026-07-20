@@ -18,9 +18,9 @@ class NotificationService {
 
   static Future<void> show(String title, String body) async {
     const androidDetails = AndroidNotificationDetails(
-      'wayk_alarms',
-      'WAYK Alarms & Reminders',
-      channelDescription: 'Alarm and medicine reminders from WAYK',
+      'OneX_alarms',
+      'OneX Alarms & Reminders',
+      channelDescription: 'Alarm and medicine reminders from OneX',
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
